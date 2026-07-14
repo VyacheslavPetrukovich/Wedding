@@ -302,7 +302,7 @@
   .timeline::before{
     content:'';
     position:absolute;
-    left: 74px;
+    left: 86px;
     top: 6px;
     bottom: 6px;
     width: 1px;
@@ -310,14 +310,14 @@
   }
   .timeline li{
     display:grid;
-    grid-template-columns: 60px 28px 1fr;
+    grid-template-columns: 72px 32px 1fr;
     align-items:start;
     gap: 0.6rem;
     padding: 0.9rem 0;
   }
   .timeline time{
     font-family:'Cormorant Garamond', serif;
-    font-size: 1.15rem;
+    font-size: 1.5rem;
     color: var(--gold);
     text-align:right;
     padding-top: 0.1rem;
@@ -325,10 +325,22 @@
   .timeline .dot{
     width: 9px; height:9px; border-radius:50%;
     background: var(--gold);
-    margin: 0.35rem auto 0;
+    margin: 0.5rem auto 0;
     position: relative;
   }
-  .timeline .event{ font-size: 0.98rem; padding-top:0.05rem; }
+  .timeline .event{ font-size: 1.15rem; padding-top:0.1rem; }
+
+  .timeline li time,
+  .timeline li .event,
+  .timeline li .dot{
+    transition: transform 0.6s ease, opacity 0.6s ease;
+  }
+  .timeline li.pre-reveal time{ opacity: 0; transform: translateX(-42px); }
+  .timeline li.pre-reveal .event{ opacity: 0; transform: translateX(42px); }
+  .timeline li.pre-reveal .dot{ opacity: 0; transform: scale(0); }
+  .timeline li.pre-reveal.in-view time{ opacity: 1; transform: translateX(0); }
+  .timeline li.pre-reveal.in-view .event{ opacity: 1; transform: translateX(0); }
+  .timeline li.pre-reveal.in-view .dot{ opacity: 1; transform: scale(1); }
 
   /* Dress code swatches */
   .palette{
@@ -435,7 +447,7 @@
   .center{ text-align:center; }
 
   @media (max-width: 480px){
-    .timeline li{ grid-template-columns: 50px 20px 1fr; }
+    .timeline li{ grid-template-columns: 60px 26px 1fr; }
     .hero .amp{ display: block; margin: 0.25rem 0; }
   }
 
@@ -565,6 +577,21 @@
     audio.play().catch(() => { /* пользователь может включить звук позже вручную, если браузер заблокирует */ });
     setTimeout(() => { cover.style.display = 'none'; }, 950);
   }, { once: true });
+
+  // ---------- Программа дня "собирается" при скролле ----------
+  if ('IntersectionObserver' in window) {
+    const timelineItems = document.querySelectorAll('.timeline li');
+    timelineItems.forEach(li => li.classList.add('pre-reveal'));
+    const timelineObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          timelineObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    timelineItems.forEach(li => timelineObserver.observe(li));
+  }
 
   // ---------- Подпись поля комментария зависит от ответа ----------
   const guestCommentLabel = document.getElementById('guestCommentLabel');
