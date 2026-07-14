@@ -716,7 +716,7 @@
   // Токен и chat_id подставляются автоматически при деплое из GitHub Secrets
   // (см. .github/workflows/deploy.yml и README.md). Локально это просто заглушки.
   const BOT_TOKEN = "__TELEGRAM_TOKEN__";
-  const CHAT_ID = "__TELEGRAM_CHAT_ID__";
+  const CHAT_IDS = ["__TELEGRAM_CHAT_ID__", "__TELEGRAM_CHAT_ID_2__"];
 
   const form = document.getElementById('rsvpForm');
   const statusEl = document.getElementById('formStatus');
@@ -745,13 +745,15 @@
         throw new Error('no-token');
       }
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-      const resp = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text })
-      });
-      const data = await resp.json();
-      if (!data.ok) throw new Error('telegram-error');
+      const activeChatIds = CHAT_IDS.filter(id => id && !id.startsWith('__'));
+      const results = await Promise.all(activeChatIds.map(chat_id =>
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id, text })
+        }).then(r => r.json()).catch(() => ({ ok: false }))
+      ));
+      if (!results.some(data => data.ok)) throw new Error('telegram-error');
 
       statusEl.textContent = 'Спасибо! Мы получили ваш ответ 💛';
       statusEl.className = 'form-status ok';
