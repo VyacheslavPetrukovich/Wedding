@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Александр &amp; Мария — приглашение на свадьбу</title>
+<title>Вячеслав &amp; Наталья — приглашение на свадьбу</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,7 +229,8 @@
   .hero-venue{
     margin-top: 0.4rem;
     color: var(--sage);
-    font-size: 0.95rem;
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
   }
   .hero-note{
     max-width: 480px;
@@ -332,8 +333,7 @@
   .radio-row label{ display:flex; align-items:center; gap:0.4rem; text-transform:none; letter-spacing:0; color: var(--ink); font-size: 0.95rem; }
   .radio-row input{ width:auto; }
 
-  #guestCountRow{ display:none; }
-  #guestCountRow.show{ display:block; }
+  textarea{ resize: vertical; }
 
   button[type="submit"]{
     margin-top: 0.6rem;
@@ -393,7 +393,7 @@
 <!-- Обложка / "восковая печать" — нажатие открывает сайт и запускает музыку -->
 <section class="cover" id="cover">
   <p class="eyebrow">Приглашаем на свадьбу</p>
-  <p class="cover-names">Александр &amp; Мария</p>
+  <p class="cover-names">Вячеслав &amp; Наталья</p>
   <button class="seal-btn" id="sealBtn" aria-label="Открыть приглашение">А&nbsp;М</button>
   <p class="cover-hint">нажмите на печать</p>
 </section>
@@ -401,9 +401,9 @@
 <main>
 
   <section class="hero block block-dark" id="top">
-    <p class="eyebrow">20 сентября 2026</p>
-    <h1 class="display">Александр <span class="amp">&amp;</span> Мария</h1>
-    <p class="hero-venue">Ресторан «Сад», Москва</p>
+    <p class="eyebrow">20 августа 2026</p>
+    <h1 class="display">Вячеслав <span class="amp">&amp;</span> Наталья</h1>
+    <p class="hero-venue">Новосибирск</p>
     <p class="hero-note">С радостью приглашаем вас разделить с нами этот день — самый важный в нашей жизни.</p>
   </section>
 
@@ -413,37 +413,37 @@
       <p class="eyebrow">Как пройдёт день</p>
       <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Программа</h2>
       <ul class="timeline">
-        <li><time>16:00</time><span class="dot"></span><span class="event">Сбор гостей</span></li>
-        <li><time>16:30</time><span class="dot"></span><span class="event">Церемония</span></li>
-        <li><time>17:30</time><span class="dot"></span><span class="event">Фотосессия и фуршет</span></li>
+        <li><time>16:30</time><span class="dot"></span><span class="event">Сбор гостей</span></li>
+        <li><time>17:00</time><span class="dot"></span><span class="event">Церемония</span></li>
+        <li><time>18:00</time><span class="dot"></span><span class="event">Фотосессия и фуршет</span></li>
         <li><time>19:00</time><span class="dot"></span><span class="event">Банкет</span></li>
-        <li><time>23:00</time><span class="dot"></span><span class="event">Первый танец</span></li>
-        <li><time>00:00</time><span class="dot"></span><span class="event">Продолжение вечера</span></li>
+        <li><time>22:00</time><span class="dot"></span><span class="event">Дискотека</span></li>
+        <li><time>23:00</time><span class="dot"></span><span class="event">Продолжение вечера</span></li>
       </ul>
     </div>
   </section>
 
   <section id="dresscode" class="block block-dark">
     <p class="eyebrow">Дресс-код</p>
-    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Благородные тона бордо</h2>
-    <p class="hero-note" style="margin-left:0;">Будем рады видеть вас в бордовых, алых, пудровых и кремовых тонах. Просим не надевать белое (это цвет невесты) и чёрное.</p>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Одевайтесь с комфортом</h2>
+    <p class="hero-note" style="margin-left:0;">Особых требований нет — приходите в том, что вам приятно и удобно, переживать не о чем. После торжества будет время переодеться, так что захватите с собой что-нибудь более свободное и вечернее для продолжения праздника.</p>
     <div class="palette" aria-hidden="true">
-      <span class="swatch" style="background:#3A0F16;"></span>
-      <span class="swatch" style="background:#C8102E;"></span>
-      <span class="swatch" style="background:#E8A9A0;"></span>
-      <span class="swatch" style="background:#F6EDE1;"></span>
+      <span class="swatch" style="background:#D9C9B0;"></span>
+      <span class="swatch" style="background:#A8A29B;"></span>
+      <span class="swatch" style="background:#8FA0AC;"></span>
+      <span class="swatch" style="background:#EFE9DD;"></span>
     </div>
   </section>
 
   <section id="location" class="block block-light">
     <p class="eyebrow">Место торжества</p>
-    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Ресторан «Сад»</h2>
-    <p class="hero-note" style="margin-left:0;">г. Москва, ул. Примерная, д. 1</p>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Коттедж в черте города</h2>
+    <p class="hero-note" style="margin-left:0;">г. Новосибирск, ул. Примерная, д. 1</p>
     <a class="map-btn" href="https://yandex.ru/maps" target="_blank" rel="noopener">Открыть на карте</a>
   </section>
 
   <section id="rsvp" class="block block-dark">
-    <p class="eyebrow">До 1 сентября 2026</p>
+    <p class="eyebrow">До 20 июля 2026</p>
     <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Будете с нами?</h2>
     <div class="card">
       <form id="rsvpForm">
@@ -460,13 +460,8 @@
           </div>
         </div>
 
-        <div id="guestCountRow">
-          <label for="guestCount">Количество гостей (с вами)</label>
-          <input type="number" id="guestCount" name="guestCount" min="1" max="5" value="1">
-        </div>
-
         <div>
-          <label for="guestComment">Комментарий (пожелания по меню, и т.д.)</label>
+          <label for="guestComment" id="guestCommentLabel">Комментарий</label>
           <textarea id="guestComment" name="guestComment" rows="3"></textarea>
         </div>
 
@@ -479,8 +474,8 @@
 </main>
 
 <footer>
-  <p class="display">Александр &amp; Мария</p>
-  <p>20 сентября 2026</p>
+  <p class="display">Вячеслав &amp; Наталья</p>
+  <p>20 августа 2026</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1/dist/confetti.browser.min.js"></script>
@@ -498,11 +493,18 @@
     setTimeout(() => { cover.style.display = 'none'; }, 950);
   }, { once: true });
 
-  // ---------- Показ поля "количество гостей" ----------
-  const guestCountRow = document.getElementById('guestCountRow');
+  // ---------- Подпись поля комментария зависит от ответа ----------
+  const guestCommentLabel = document.getElementById('guestCommentLabel');
+  const guestComment = document.getElementById('guestComment');
   document.querySelectorAll('input[name="attending"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
-      guestCountRow.classList.toggle('show', e.target.value === 'Да');
+      if (e.target.value === 'Да') {
+        guestCommentLabel.textContent = 'Комментарий (пожелания по меню, музыка на дискотеку, предпочтения по напиткам)';
+        guestComment.placeholder = '';
+      } else {
+        guestCommentLabel.textContent = 'Пожелания молодожёнам';
+        guestComment.placeholder = 'Оставьте свои пожелания молодожёнам';
+      }
     });
   });
 
@@ -524,15 +526,14 @@
 
     const name = document.getElementById('guestName').value.trim();
     const attending = form.querySelector('input[name="attending"]:checked')?.value || '—';
-    const guestCount = attending === 'Да' ? document.getElementById('guestCount').value : '—';
     const comment = document.getElementById('guestComment').value.trim();
+    const commentLabel = attending === 'Да' ? 'Комментарий' : 'Пожелание молодожёнам';
 
     const text =
       `Новый ответ на приглашение\n` +
       `Имя: ${name}\n` +
       `Придёт: ${attending}\n` +
-      `Гостей: ${guestCount}\n` +
-      `Комментарий: ${comment || '—'}`;
+      `${commentLabel}: ${comment || '—'}`;
 
     try {
       if (BOT_TOKEN.startsWith('__')) {
@@ -551,7 +552,8 @@
       statusEl.textContent = 'Спасибо! Мы получили ваш ответ 💛';
       statusEl.className = 'form-status ok';
       form.reset();
-      guestCountRow.classList.remove('show');
+      guestCommentLabel.textContent = 'Комментарий';
+      guestComment.placeholder = '';
 
       if (window.confetti) {
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#C8102E', '#E8A9A0', '#B98A82', '#F6EDE1'] });
