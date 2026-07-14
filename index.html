@@ -352,35 +352,12 @@
   .swatch{
     width: 46px; height:46px; border-radius: 50%;
     border: 1px solid var(--line);
+    background: var(--c);
   }
 
-  /* Появление дресс-кода при скролле: текст выезжает по бокам, кружки заполняются по кругу */
-  @property --fill{
-    syntax: '<percentage>';
-    inherits: true;
-    initial-value: 0%;
-  }
-  #dresscode .dc-left,
-  #dresscode .dc-right{
-    transition: transform 0.7s ease, opacity 0.7s ease;
-  }
-  #dresscode.pre-reveal .dc-left{ opacity: 0; transform: translateX(-46px); }
-  #dresscode.pre-reveal .dc-right{ opacity: 0; transform: translateX(46px); }
-  #dresscode.pre-reveal.in-view .dc-left,
-  #dresscode.pre-reveal.in-view .dc-right{ opacity: 1; transform: translateX(0); }
-  #dresscode.pre-reveal .swatch{
+  /* Кружки дресс-кода заполняются по кругу строго в такт со скроллом (см. JS) */
+  #dresscode.js-scroll-fill .swatch{
     background: conic-gradient(var(--c) var(--fill, 0%), rgba(246,237,225,0.18) var(--fill, 0%));
-  }
-  #dresscode.pre-reveal.in-view .swatch{
-    animation: swatch-fill 1.1s ease forwards;
-  }
-  #dresscode.pre-reveal.in-view .swatch:nth-child(2){ animation-delay: 0.08s; }
-  #dresscode.pre-reveal.in-view .swatch:nth-child(3){ animation-delay: 0.16s; }
-  #dresscode.pre-reveal.in-view .swatch:nth-child(4){ animation-delay: 0.24s; }
-  #dresscode.pre-reveal.in-view .swatch:nth-child(5){ animation-delay: 0.32s; }
-  @keyframes swatch-fill{
-    from{ --fill: 0%; }
-    to{ --fill: 100%; }
   }
 
   /* Cards */
@@ -534,15 +511,15 @@
   </section>
 
   <section id="dresscode" class="block block-dark">
-    <p class="eyebrow dc-left">Дресс-код</p>
-    <h2 class="display dc-left" style="font-size:1.8rem; margin-top:0.4rem;">Одевайтесь с комфортом</h2>
-    <p class="hero-note dc-right" style="margin-left:0;">Особых требований нет — приходите в том, что вам приятно и удобно, кроме цвета невесты, разумеется, — переживать не о чем. После торжества будет время переодеться, так что захватите с собой что-нибудь более свободное и вечернее для продолжения праздника.</p>
+    <p class="eyebrow">Дресс-код</p>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Одевайтесь с комфортом</h2>
+    <p class="hero-note" style="margin-left:0;">Особых требований нет — приходите в том, что вам приятно и удобно, кроме цвета невесты, разумеется, — переживать не о чем. После торжества будет время переодеться, так что захватите с собой что-нибудь более свободное и вечернее для продолжения праздника.</p>
     <div class="palette" aria-hidden="true">
-      <span class="swatch" style="--c:#D9C9B0; background:#D9C9B0;"></span>
-      <span class="swatch" style="--c:#A8A29B; background:#A8A29B;"></span>
-      <span class="swatch" style="--c:#8FA0AC; background:#8FA0AC;"></span>
-      <span class="swatch" style="--c:#9BA986; background:#9BA986;"></span>
-      <span class="swatch" style="--c:#C4907A; background:#C4907A;"></span>
+      <span class="swatch" style="--c:#D9C9B0;"></span>
+      <span class="swatch" style="--c:#A8A29B;"></span>
+      <span class="swatch" style="--c:#8FA0AC;"></span>
+      <span class="swatch" style="--c:#9BA986;"></span>
+      <span class="swatch" style="--c:#C4907A;"></span>
     </div>
   </section>
 
@@ -622,20 +599,34 @@
     timelineItems.forEach(li => timelineObserver.observe(li));
   }
 
-  // ---------- Дресс-код "собирается" при скролле ----------
-  if ('IntersectionObserver' in window) {
+  // ---------- Кружки дресс-кода заполняются по кругу в такт со скроллом ----------
+  (function(){
     const dresscodeSection = document.getElementById('dresscode');
-    dresscodeSection.classList.add('pre-reveal');
-    const dresscodeObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          dresscodeObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    dresscodeObserver.observe(dresscodeSection);
-  }
+    const swatches = dresscodeSection.querySelectorAll('.swatch');
+    if (!swatches.length) return;
+    dresscodeSection.classList.add('js-scroll-fill');
+
+    let ticking = false;
+    function updateFill(){
+      const rect = dresscodeSection.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh;        // низ экрана — заливка 0%
+      const end = vh * 0.4;    // блок поднялся к 40% экрана — заливка 100%
+      let progress = (start - rect.top) / (start - end);
+      progress = Math.min(1, Math.max(0, progress));
+      swatches.forEach(sw => sw.style.setProperty('--fill', (progress * 100) + '%'));
+      ticking = false;
+    }
+    function onScroll(){
+      if (!ticking) {
+        requestAnimationFrame(updateFill);
+        ticking = true;
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    updateFill();
+  })();
 
   // ---------- Подпись поля комментария зависит от ответа ----------
   const guestCommentLabel = document.getElementById('guestCommentLabel');
