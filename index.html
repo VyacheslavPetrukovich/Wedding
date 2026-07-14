@@ -602,16 +602,17 @@
   // ---------- Кружки дресс-кода заполняются по кругу в такт со скроллом ----------
   (function(){
     const dresscodeSection = document.getElementById('dresscode');
+    const palette = dresscodeSection.querySelector('.palette');
     const swatches = dresscodeSection.querySelectorAll('.swatch');
-    if (!swatches.length) return;
+    if (!swatches.length || !palette) return;
     dresscodeSection.classList.add('js-scroll-fill');
 
     let ticking = false;
     function updateFill(){
-      const rect = dresscodeSection.getBoundingClientRect();
+      const rect = palette.getBoundingClientRect();
       const vh = window.innerHeight;
-      const start = vh;        // низ экрана — заливка 0%
-      const end = vh * 0.4;    // блок поднялся к 40% экрана — заливка 100%
+      const start = vh;        // сами кружки у низа экрана — заливка 0%
+      const end = vh * 0.5;    // кружки дошли до середины экрана — заливка 100%
       let progress = (start - rect.top) / (start - end);
       progress = Math.min(1, Math.max(0, progress));
       swatches.forEach(sw => sw.style.setProperty('--fill', (progress * 100) + '%'));
