@@ -398,6 +398,24 @@
   }
   .map-btn:hover{ background: var(--gold); color: var(--bg); }
 
+  /* Сборка заголовка "Будете с нами?" из трёх частей */
+  #rsvp .rsvp-word-left,
+  #rsvp .rsvp-word-right,
+  #rsvp .rsvp-letter-drop{
+    display: inline-block;
+    transition: transform 0.6s ease-out, opacity 0.5s ease-out;
+  }
+  #rsvp.pre-reveal .rsvp-word-left{ opacity: 0; transform: translateX(-70px); }
+  #rsvp.pre-reveal .rsvp-word-right{ opacity: 0; transform: translateX(70px); }
+  #rsvp.pre-reveal .rsvp-letter-drop{
+    opacity: 0;
+    transform: translateY(-46px);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s, opacity 0.35s ease-out 0.4s;
+  }
+  #rsvp.pre-reveal.in-view .rsvp-word-left,
+  #rsvp.pre-reveal.in-view .rsvp-word-right{ opacity: 1; transform: translateX(0); }
+  #rsvp.pre-reveal.in-view .rsvp-letter-drop{ opacity: 1; transform: translateY(0); }
+
   /* Резкое появление текста в блоке локации при скролле */
   #location .loc-left,
   #location .loc-right{
@@ -548,7 +566,7 @@
 
   <section id="rsvp" class="block block-dark">
     <p class="eyebrow">Ответьте, пожалуйста, до 20 июля 2026</p>
-    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Будете с нами?</h2>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;"><span class="rsvp-word-left">Будете</span> <span class="rsvp-letter-drop">с</span> <span class="rsvp-word-right">нами?</span></h2>
     <div class="card">
       <form id="rsvpForm">
         <div>
@@ -610,6 +628,21 @@
       });
     }, { threshold: 0.35 });
     timelineItems.forEach(li => timelineObserver.observe(li));
+  }
+
+  // ---------- Сборка заголовка "Будете с нами?" после того, как форма хотя бы наполовину видна ----------
+  if ('IntersectionObserver' in window) {
+    const rsvpSection = document.getElementById('rsvp');
+    rsvpSection.classList.add('pre-reveal');
+    const rsvpObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          rsvpObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    rsvpObserver.observe(rsvpSection);
   }
 
   // ---------- Резкое появление текста в блоке локации при скролле ----------
