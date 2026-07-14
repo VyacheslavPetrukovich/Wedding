@@ -118,7 +118,7 @@
   }
 
   .seal-btn{
-    width: 150px;
+    width: 170px;
     padding: 0;
     border: none;
     background: none;
@@ -127,23 +127,36 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    transition: transform 0.4s ease, filter 0.4s ease;
-    filter: drop-shadow(0 14px 26px rgba(0,0,0,0.55));
+    transition: transform 0.4s ease;
+  }
+  .seal-btn::before{
+    content:'';
+    position:absolute;
+    inset: -18px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,16,46,0.55) 0%, rgba(200,16,46,0) 70%);
+    animation: sealGlow 2.5s ease-in-out infinite;
+    z-index: 0;
   }
   .seal-btn img{
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 14px;
+    mix-blend-mode: screen;
     pointer-events: none;
   }
   .seal-btn:hover{
     transform: scale(1.04);
-    filter: drop-shadow(0 18px 34px rgba(0,0,0,0.65));
   }
   .cover.opening .seal-btn{
     transform: scale(1.5) rotate(8deg);
     opacity: 0;
+  }
+  @keyframes sealGlow{
+    0%,100%{ opacity: 0.25; }
+    50%{ opacity: 0.75; }
   }
 
   .cover-hint{
@@ -152,7 +165,17 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--sage);
-    animation: pulse 2.4s ease-in-out infinite;
+    animation: pulse 2.4s ease-in-out infinite, hintShake 2s ease-in-out infinite;
+  }
+  @keyframes hintShake{
+    0%, 80%{ transform: translateX(0); }
+    82%{ transform: translateX(-3px); }
+    84%{ transform: translateX(3px); }
+    86%{ transform: translateX(-3px); }
+    88%{ transform: translateX(3px); }
+    90%{ transform: translateX(-2px); }
+    92%{ transform: translateX(2px); }
+    94%, 100%{ transform: translateX(0); }
   }
   @keyframes pulse{
     0%,100%{ opacity: 0.5; }
