@@ -91,7 +91,7 @@
     flex-direction: column;
     align-items:center;
     justify-content:center;
-    background: radial-gradient(circle at 50% 40%, #223327 0%, #17221B 100%);
+    background: radial-gradient(circle at 50% 40%, #3A0F16 0%, #1D060A 100%);
     text-align:center;
     transition: opacity 0.9s ease, transform 0.9s ease;
   }
@@ -100,6 +100,14 @@
     transform: scale(1.04);
     pointer-events:none;
   }
+  .cover-date{
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.7rem;
+  }
+
   .cover-names{
     font-family:'Cormorant Garamond', serif;
     font-style: italic;
@@ -393,8 +401,9 @@
 <!-- Обложка / "восковая печать" — нажатие открывает сайт и запускает музыку -->
 <section class="cover" id="cover">
   <p class="eyebrow">Приглашаем на свадьбу</p>
+  <p class="cover-date">20 августа 2026</p>
   <p class="cover-names">Вячеслав &amp; Наталья</p>
-  <button class="seal-btn" id="sealBtn" aria-label="Открыть приглашение">А&nbsp;М</button>
+  <button class="seal-btn" id="sealBtn" aria-label="Открыть приглашение">В&nbsp;Н</button>
   <p class="cover-hint">нажмите на печать</p>
 </section>
 
