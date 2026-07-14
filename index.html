@@ -426,6 +426,13 @@
   #location.pre-reveal.in-view .loc-left,
   #location.pre-reveal.in-view .loc-right{ opacity: 1; transform: translateX(0); }
 
+  #location .loc-btn{
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    transition-delay: 0.15s;
+  }
+  #location.pre-reveal .loc-btn{ opacity: 0; transform: translateY(28px) scale(0.92); }
+  #location.pre-reveal.in-view .loc-btn{ opacity: 1; transform: translateY(0) scale(1); }
+
   /* RSVP form */
   form{ display:flex; flex-direction:column; gap: 1.1rem; margin-top: 1.6rem; }
   label{ font-size: 0.8rem; letter-spacing: 0.06em; color: var(--sage); text-transform: uppercase; }
@@ -561,7 +568,7 @@
     <div class="map-embed">
       <iframe src="https://yandex.ru/map-widget/v1/?ll=82.920430%2C55.030199&z=12&l=map" width="100%" height="240" frameborder="0" loading="lazy" title="Карта проезда"></iframe>
     </div>
-    <a class="map-btn" href="https://yandex.ru/maps" target="_blank" rel="noopener">Открыть на карте</a>
+    <a class="map-btn loc-btn" href="https://yandex.ru/maps" target="_blank" rel="noopener">Открыть на карте</a>
   </section>
 
   <section id="rsvp" class="block block-dark">
@@ -656,7 +663,7 @@
           locationObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.6 });
     locationObserver.observe(locationSection);
   }
 
