@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Александр &amp; Мария — приглашение на свадьбу</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #2B0A0F;
+    --bg-card: #3A0F16;
+    --bg-card-soft: #481620;
+    --ink: #F6EDE1;
+    --ink-dim: #D8C6B8;
+    --gold: #C8102E;
+    --gold-soft: #9E0D26;
+    --blush: #E8A9A0;
+    --sage: #B98A82;
+    --line: rgba(200,16,46,0.35);
+    --maxw: 720px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body.locked{ overflow: hidden; height: 100vh; }
+
+  h1,h2,h3, .display{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  a{ color: var(--gold); }
+
+  .eyebrow{
+    font-family:'Jost', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.7rem;
+    color: var(--sage);
+  }
+
+  /* ---------- Ambient decoration ---------- */
+  .ambient{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .ambient svg{
+    position: absolute;
+    opacity: 0.16;
+    stroke: var(--gold);
+  }
+  .ambient .branch-tl{ top: -40px; left: -40px; width: 260px; animation: sway 16s ease-in-out infinite alternate; }
+  .ambient .branch-br{ bottom: -50px; right: -60px; width: 300px; animation: sway 19s ease-in-out infinite alternate-reverse; }
+  .ambient .leaf-mid{ top: 40%; right: 6%; width: 90px; opacity: 0.10; animation: drift 22s ease-in-out infinite alternate; }
+
+  @keyframes sway{
+    from{ transform: rotate(-2deg) translateY(0); }
+    to{ transform: rotate(2deg) translateY(-14px); }
+  }
+  @keyframes drift{
+    from{ transform: translateY(0) rotate(0deg); }
+    to{ transform: translateY(-24px) rotate(6deg); }
+  }
+
+  /* ---------- Cover / seal ---------- */
+  .cover{
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    background: radial-gradient(circle at 50% 40%, #223327 0%, #17221B 100%);
+    text-align:center;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .cover.opening{
+    opacity:0;
+    transform: scale(1.04);
+    pointer-events:none;
+  }
+  .cover-names{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--ink-dim);
+    margin-bottom: 2.2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .seal-btn{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: var(--bg-card);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.1rem;
+    cursor: pointer;
+    position: relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 0 0 6px rgba(201,166,107,0.08);
+  }
+  .seal-btn::before{
+    content:'';
+    position:absolute;
+    inset: 8px;
+    border-radius:50%;
+    border: 1px dashed var(--line);
+  }
+  .seal-btn:hover{
+    transform: scale(1.04);
+    box-shadow: 0 0 0 10px rgba(201,166,107,0.10);
+  }
+  .cover.opening .seal-btn{
+    transform: scale(1.5) rotate(8deg);
+    opacity: 0;
+  }
+
+  .cover-hint{
+    margin-top: 1.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity: 0.5; }
+    50%{ opacity: 1; }
+  }
+
+  /* ---------- Layout ---------- */
+  main{
+    position: relative;
+    z-index: 2;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 3rem 1.1rem 0;
+  }
+
+  /* Обычные блоки — отдельные скруглённые карточки */
+  section.block{
+    position: relative;
+    padding: 3.4rem 2rem;
+    margin: 1.5rem 0;
+    border-radius: 2.5rem;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+  }
+  section.block:first-of-type{ margin-top: 0; border-radius: 2.5rem 2.5rem 4.5rem 4.5rem; }
+  section.block:last-of-type{ margin-bottom: 0; border-radius: 4.5rem 4.5rem 2.5rem 2.5rem; }
+
+  /* Тёмный (бордовый) блок — ключевая информация */
+  .block-dark{ background: var(--bg-card); color: var(--ink); }
+
+  /* Светлый (слоновая кость) блок — второстепенная информация */
+  .block-light{ background: var(--ink); color: var(--bg-card); }
+  .block-light .eyebrow,
+  .block-light .hero-venue{ color: var(--gold-soft); }
+  .block-light .hero-note{ color: var(--bg-card); opacity: 0.72; }
+  .block-light .timeline::before{ background: rgba(58,15,22,0.25); }
+  .block-light .swatch{ border-color: rgba(58,15,22,0.3); }
+
+  /* Исключение: hero и "Программа" сшиты волной в одну композицию */
+  #top{
+    border-radius: 2.5rem 2.5rem 0 0;
+    margin-bottom: 0;
+  }
+  #timeline{
+    margin-top: -58px;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  #timeline .wave{
+    display: block;
+    width: 100%;
+    height: 60px;
+  }
+  #timeline .block-body{
+    background: var(--ink);
+    color: var(--bg-card);
+    padding: 1.2rem 2rem 3.4rem;
+    margin-top: -1px;
+    border-radius: 0 0 2.5rem 2.5rem;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+  }
+
+  .hero{
+    text-align:center;
+  }
+  .hero .display{
+    font-size: clamp(2.6rem, 8vw, 4.4rem);
+    font-style: italic;
+    margin: 0.6rem 0 1rem;
+  }
+  .hero .amp{ color: var(--gold); }
+  .hero-date{
+    font-size: 1.05rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+  }
+  .hero-venue{
+    margin-top: 0.4rem;
+    color: var(--sage);
+    font-size: 0.95rem;
+  }
+  .hero-note{
+    max-width: 480px;
+    margin: 2rem auto 0;
+    font-size: 0.98rem;
+    color: var(--ink-dim);
+  }
+
+  /* Timeline */
+  .timeline{
+    list-style:none;
+    margin: 2.4rem 0 0;
+    padding: 0;
+    position: relative;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left: 74px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--line);
+  }
+  .timeline li{
+    display:grid;
+    grid-template-columns: 60px 28px 1fr;
+    align-items:start;
+    gap: 0.6rem;
+    padding: 0.9rem 0;
+  }
+  .timeline time{
+    font-family:'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--gold);
+    text-align:right;
+    padding-top: 0.1rem;
+  }
+  .timeline .dot{
+    width: 9px; height:9px; border-radius:50%;
+    background: var(--gold);
+    margin: 0.35rem auto 0;
+    position: relative;
+  }
+  .timeline .event{ font-size: 0.98rem; padding-top:0.05rem; }
+
+  /* Dress code swatches */
+  .palette{
+    display:flex;
+    gap: 0.8rem;
+    margin-top: 1.6rem;
+    flex-wrap: wrap;
+  }
+  .swatch{
+    width: 46px; height:46px; border-radius: 50%;
+    border: 1px solid var(--line);
+  }
+
+  /* Cards */
+  .card{
+    background: var(--bg-card-soft);
+    border: 1px solid var(--line);
+    border-radius: 1.5rem;
+    padding: 2rem;
+  }
+
+  /* Location */
+  .map-btn{
+    display:inline-block;
+    margin-top: 1.4rem;
+    padding: 0.75rem 1.6rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration:none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  .map-btn:hover{ background: var(--gold); color: var(--bg); }
+
+  /* RSVP form */
+  form{ display:flex; flex-direction:column; gap: 1.1rem; margin-top: 1.6rem; }
+  label{ font-size: 0.8rem; letter-spacing: 0.06em; color: var(--sage); text-transform: uppercase; }
+  input, textarea, select{
+    width:100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family:'Jost', sans-serif;
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 3px;
+  }
+  input:focus, textarea:focus, select:focus{
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+  }
+  .radio-row{ display:flex; gap: 1.4rem; }
+  .radio-row label{ display:flex; align-items:center; gap:0.4rem; text-transform:none; letter-spacing:0; color: var(--ink); font-size: 0.95rem; }
+  .radio-row input{ width:auto; }
+
+  #guestCountRow{ display:none; }
+  #guestCountRow.show{ display:block; }
+
+  button[type="submit"]{
+    margin-top: 0.6rem;
+    padding: 0.9rem;
+    background: var(--gold);
+    border: none;
+    color: var(--ink);
+    font-family:'Jost', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.25s ease;
+  }
+  button[type="submit"]:hover{ background: var(--gold-soft); }
+  button[type="submit"]:disabled{ opacity: 0.6; cursor: not-allowed; }
+
+  .form-status{ font-size: 0.9rem; min-height: 1.2em; }
+  .form-status.ok{ color: var(--blush); }
+  .form-status.err{ color: #E08585; }
+
+  footer{
+    text-align:center;
+    padding: 3rem 1.4rem 4rem;
+    color: var(--sage);
+    font-size: 0.85rem;
+    position: relative;
+    z-index: 2;
+  }
+  footer .display{ font-style: italic; color: var(--ink-dim); font-size: 1.3rem; margin-bottom: 0.4rem; }
+
+  .center{ text-align:center; }
+
+  @media (max-width: 480px){
+    .timeline li{ grid-template-columns: 50px 20px 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body class="locked">
+
+<!-- Фоновая музыка. Замените assets/music.mp3 на свой файл (royalty-free или с правами использования) -->
+<audio id="bgAudio" src="assets/music.mp3" loop preload="none"></audio>
+
+<div class="ambient" aria-hidden="true">
+  <svg class="branch-tl" viewBox="0 0 200 200" fill="none"><path d="M10 190 C 40 140, 30 80, 70 40 M70 40 C 80 55, 95 55, 105 40 M70 40 C 60 55, 45 55, 35 42 M50 90 C 60 100, 75 100, 82 88 M50 90 C 42 100, 28 100, 20 90" stroke-width="1.4" stroke-linecap="round"/></svg>
+  <svg class="branch-br" viewBox="0 0 220 220" fill="none"><path d="M210 210 C 170 170, 175 110, 130 70 M130 70 C 118 85, 100 85, 90 68 M130 70 C 142 85, 158 85, 168 70 M150 130 C 138 142, 120 140, 112 126 M150 130 C 160 142, 178 140, 186 126" stroke-width="1.4" stroke-linecap="round"/></svg>
+  <svg class="leaf-mid" viewBox="0 0 100 100" fill="none"><path d="M50 90 C 20 70, 20 30, 50 10 C 80 30, 80 70, 50 90 Z M50 10 L50 90" stroke-width="1.2"/></svg>
+</div>
+
+<!-- Обложка / "восковая печать" — нажатие открывает сайт и запускает музыку -->
+<section class="cover" id="cover">
+  <p class="eyebrow">Приглашаем на свадьбу</p>
+  <p class="cover-names">Александр &amp; Мария</p>
+  <button class="seal-btn" id="sealBtn" aria-label="Открыть приглашение">А&nbsp;М</button>
+  <p class="cover-hint">нажмите на печать</p>
+</section>
+
+<main>
+
+  <section class="hero block block-dark" id="top">
+    <p class="eyebrow">20 сентября 2026</p>
+    <h1 class="display">Александр <span class="amp">&amp;</span> Мария</h1>
+    <p class="hero-venue">Ресторан «Сад», Москва</p>
+    <p class="hero-note">С радостью приглашаем вас разделить с нами этот день — самый важный в нашей жизни.</p>
+  </section>
+
+  <section id="timeline" class="block block-light">
+    <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,50 C300,110 900,-10 1200,50 L1200,120 L0,120 Z" style="fill:var(--ink);"></path></svg>
+    <div class="block-body">
+      <p class="eyebrow">Как пройдёт день</p>
+      <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Программа</h2>
+      <ul class="timeline">
+        <li><time>16:00</time><span class="dot"></span><span class="event">Сбор гостей</span></li>
+        <li><time>16:30</time><span class="dot"></span><span class="event">Церемония</span></li>
+        <li><time>17:30</time><span class="dot"></span><span class="event">Фотосессия и фуршет</span></li>
+        <li><time>19:00</time><span class="dot"></span><span class="event">Банкет</span></li>
+        <li><time>23:00</time><span class="dot"></span><span class="event">Первый танец</span></li>
+        <li><time>00:00</time><span class="dot"></span><span class="event">Продолжение вечера</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="dresscode" class="block block-dark">
+    <p class="eyebrow">Дресс-код</p>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Благородные тона бордо</h2>
+    <p class="hero-note" style="margin-left:0;">Будем рады видеть вас в бордовых, алых, пудровых и кремовых тонах. Просим не надевать белое (это цвет невесты) и чёрное.</p>
+    <div class="palette" aria-hidden="true">
+      <span class="swatch" style="background:#3A0F16;"></span>
+      <span class="swatch" style="background:#C8102E;"></span>
+      <span class="swatch" style="background:#E8A9A0;"></span>
+      <span class="swatch" style="background:#F6EDE1;"></span>
+    </div>
+  </section>
+
+  <section id="location" class="block block-light">
+    <p class="eyebrow">Место торжества</p>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Ресторан «Сад»</h2>
+    <p class="hero-note" style="margin-left:0;">г. Москва, ул. Примерная, д. 1</p>
+    <a class="map-btn" href="https://yandex.ru/maps" target="_blank" rel="noopener">Открыть на карте</a>
+  </section>
+
+  <section id="rsvp" class="block block-dark">
+    <p class="eyebrow">До 1 сентября 2026</p>
+    <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Будете с нами?</h2>
+    <div class="card">
+      <form id="rsvpForm">
+        <div>
+          <label for="guestName">Ваше имя</label>
+          <input type="text" id="guestName" name="guestName" required autocomplete="name">
+        </div>
+
+        <div>
+          <label>Сможете прийти?</label>
+          <div class="radio-row">
+            <label><input type="radio" name="attending" value="Да" required> Да, буду</label>
+            <label><input type="radio" name="attending" value="Нет" required> Не смогу</label>
+          </div>
+        </div>
+
+        <div id="guestCountRow">
+          <label for="guestCount">Количество гостей (с вами)</label>
+          <input type="number" id="guestCount" name="guestCount" min="1" max="5" value="1">
+        </div>
+
+        <div>
+          <label for="guestComment">Комментарий (пожелания по меню, и т.д.)</label>
+          <textarea id="guestComment" name="guestComment" rows="3"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn">Отправить ответ</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p class="display">Александр &amp; Мария</p>
+  <p>20 сентября 2026</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1/dist/confetti.browser.min.js"></script>
+<script>
+  // ---------- Открытие обложки + музыка ----------
+  const cover = document.getElementById('cover');
+  const sealBtn = document.getElementById('sealBtn');
+  const audio = document.getElementById('bgAudio');
+
+  sealBtn.addEventListener('click', () => {
+    cover.classList.add('opening');
+    document.body.classList.remove('locked');
+    audio.volume = 0.5;
+    audio.play().catch(() => { /* пользователь может включить звук позже вручную, если браузер заблокирует */ });
+    setTimeout(() => { cover.style.display = 'none'; }, 950);
+  }, { once: true });
+
+  // ---------- Показ поля "количество гостей" ----------
+  const guestCountRow = document.getElementById('guestCountRow');
+  document.querySelectorAll('input[name="attending"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      guestCountRow.classList.toggle('show', e.target.value === 'Да');
+    });
+  });
+
+  // ---------- Отправка в Telegram-бота ----------
+  // Токен и chat_id подставляются автоматически при деплое из GitHub Secrets
+  // (см. .github/workflows/deploy.yml и README.md). Локально это просто заглушки.
+  const BOT_TOKEN = "__TELEGRAM_TOKEN__";
+  const CHAT_ID = "__TELEGRAM_CHAT_ID__";
+
+  const form = document.getElementById('rsvpForm');
+  const statusEl = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Отправляем...';
+    statusEl.className = 'form-status';
+
+    const name = document.getElementById('guestName').value.trim();
+    const attending = form.querySelector('input[name="attending"]:checked')?.value || '—';
+    const guestCount = attending === 'Да' ? document.getElementById('guestCount').value : '—';
+    const comment = document.getElementById('guestComment').value.trim();
+
+    const text =
+      `Новый ответ на приглашение\n` +
+      `Имя: ${name}\n` +
+      `Придёт: ${attending}\n` +
+      `Гостей: ${guestCount}\n` +
+      `Комментарий: ${comment || '—'}`;
+
+    try {
+      if (BOT_TOKEN.startsWith('__')) {
+        // Токен ещё не подставлен (например, локальный просмотр файла) — не отправляем запрос
+        throw new Error('no-token');
+      }
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text })
+      });
+      const data = await resp.json();
+      if (!data.ok) throw new Error('telegram-error');
+
+      statusEl.textContent = 'Спасибо! Мы получили ваш ответ 💛';
+      statusEl.className = 'form-status ok';
+      form.reset();
+      guestCountRow.classList.remove('show');
+
+      if (window.confetti) {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#C8102E', '#E8A9A0', '#B98A82', '#F6EDE1'] });
+      }
+    } catch (err) {
+      statusEl.textContent = 'Не получилось отправить. Напишите нам, пожалуйста, напрямую.';
+      statusEl.className = 'form-status err';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
