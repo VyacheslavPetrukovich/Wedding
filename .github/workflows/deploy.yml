@@ -27,8 +27,7 @@ jobs:
       - name: Build (подстановка токена и chat_id из Secrets)
         run: |
           mkdir -p build
-          cp -r . build/ 2>/dev/null || true
-          rm -rf build/.git build/.github
+          rsync -a --exclude=build --exclude=.git --exclude=.github ./ build/
 
           sed -i "s|__TELEGRAM_TOKEN__|${{ secrets.TELEGRAM_BOT_TOKEN }}|g" build/index.html
           sed -i "s|__TELEGRAM_CHAT_ID__|${{ secrets.TELEGRAM_CHAT_ID }}|g" build/index.html
