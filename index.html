@@ -712,11 +712,46 @@
     });
   });
 
-  // ---------- Отправка в Telegram-бота ----------
-  // Токен и chat_id подставляются автоматически при деплое из GitHub Secrets
+  // ---------- Отправка сообщения ВК-боту через JSONP (без CORS-ограничений) ----------
+  // Токен и id получателей подставляются автоматически при деплое из GitHub Secrets
   // (см. .github/workflows/deploy.yml и README.md). Локально это просто заглушки.
-  const BOT_TOKEN = "__TELEGRAM_TOKEN__";
-  const CHAT_IDS = ["__TELEGRAM_CHAT_ID__", "__TELEGRAM_CHAT_ID_2__"];
+  const VK_TOKEN = "__VK_TOKEN__";
+  const VK_USER_IDS = ["__VK_USER_ID_1__", "__VK_USER_ID_2__"];
+
+  function vkSendMessage(token, peerId, message) {
+    return new Promise((resolve) => {
+      const callbackName = 'vkCb_' + Math.random().toString(36).slice(2);
+      const script = document.createElement('script');
+
+      const timer = setTimeout(() => {
+        cleanup();
+        resolve({ ok: false });
+      }, 8000);
+
+      function cleanup() {
+        clearTimeout(timer);
+        delete window[callbackName];
+        script.remove();
+      }
+
+      window[callbackName] = (data) => {
+        cleanup();
+        resolve({ ok: !!(data && data.response) });
+      };
+
+      const params = new URLSearchParams({
+        access_token: token,
+        peer_id: peerId,
+        message,
+        random_id: Math.floor(Math.random() * 2147483647),
+        v: '5.199',
+        callback: callbackName
+      });
+      script.src = `https://api.vk.com/method/messages.send?${params.toString()}`;
+      script.onerror = () => { cleanup(); resolve({ ok: false }); };
+      document.body.appendChild(script);
+    });
+  }
 
   const form = document.getElementById('rsvpForm');
   const statusEl = document.getElementById('formStatus');
@@ -740,20 +775,13 @@
       `${commentLabel}: ${comment || '—'}`;
 
     try {
-      if (BOT_TOKEN.startsWith('__')) {
+      if (VK_TOKEN.startsWith('__')) {
         // Токен ещё не подставлен (например, локальный просмотр файла) — не отправляем запрос
         throw new Error('no-token');
       }
-      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-      const activeChatIds = CHAT_IDS.filter(id => id && !id.startsWith('__'));
-      const results = await Promise.all(activeChatIds.map(chat_id =>
-        fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id, text })
-        }).then(r => r.json()).catch(() => ({ ok: false }))
-      ));
-      if (!results.some(data => data.ok)) throw new Error('telegram-error');
+      const activeUserIds = VK_USER_IDS.filter(id => id && !id.startsWith('__'));
+      const results = await Promise.all(activeUserIds.map(peerId => vkSendMessage(VK_TOKEN, peerId, text)));
+      if (!results.some(r => r.ok)) throw new Error('vk-error');
 
       statusEl.textContent = 'Спасибо! Мы получили ваш ответ 💛';
       statusEl.className = 'form-status ok';

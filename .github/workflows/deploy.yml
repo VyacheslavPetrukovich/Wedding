@@ -24,14 +24,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build (подстановка токена и chat_id из Secrets)
+      - name: Build (подстановка токена и id получателей из Secrets)
         run: |
           mkdir -p build
           rsync -a --exclude=build --exclude=.git --exclude=.github ./ build/
 
-          sed -i "s|__TELEGRAM_TOKEN__|${{ secrets.TELEGRAM_BOT_TOKEN }}|g" build/index.html
-          sed -i "s|__TELEGRAM_CHAT_ID__|${{ secrets.TELEGRAM_CHAT_ID }}|g" build/index.html
-          sed -i "s|__TELEGRAM_CHAT_ID_2__|${{ secrets.TELEGRAM_CHAT_ID_2 }}|g" build/index.html
+          sed -i "s|__VK_TOKEN__|${{ secrets.VK_ACCESS_TOKEN }}|g" build/index.html
+          sed -i "s|__VK_USER_ID_1__|${{ secrets.VK_USER_ID_1 }}|g" build/index.html
+          sed -i "s|__VK_USER_ID_2__|${{ secrets.VK_USER_ID_2 }}|g" build/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
