@@ -145,15 +145,13 @@
   }
 
   .seal-btn{
-    width: 260px;
+    width: 210px;
+    height: 214px;
     padding: 0;
     border: none;
     background: none;
     cursor: pointer;
     position: relative;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     transition: transform 0.4s ease;
   }
   .seal-btn::before{
@@ -166,9 +164,11 @@
     z-index: 0;
   }
   .seal-btn img{
-    position: relative;
+    position: absolute;
+    left: -25px;
+    top: -68px;
     z-index: 1;
-    width: 100%;
+    width: 260px;
     height: auto;
     display: block;
     mix-blend-mode: screen;
@@ -253,7 +253,7 @@
   .hero .amp img{ height: 0.85em; width: auto; display: block; margin: 0 auto; }
 
   .amp-mini{ display: inline-block; vertical-align: middle; margin: 0 0.12em; }
-  .amp-mini img{ height: 0.5em; width: auto; display: block; margin: 0 auto; }
+  .amp-mini img{ height: 0.65em; width: auto; display: block; margin: 0 auto; }
   .hero-date{
     font-size: 1.05rem;
     letter-spacing: 0.1em;
