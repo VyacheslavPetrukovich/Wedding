@@ -248,7 +248,8 @@
     line-height: 1.15;
     margin: 0.6rem 0 1rem;
   }
-  .hero .amp{ color: var(--gold); margin: 0 0.15em; }
+  .hero .amp{ display: inline-block; vertical-align: middle; margin: 0 0.15em; }
+  .hero .amp img{ height: 0.85em; width: auto; display: block; }
   .hero-date{
     font-size: 1.05rem;
     letter-spacing: 0.1em;
@@ -548,6 +549,7 @@
   /* RSVP form */
   form{ display:flex; flex-direction:column; gap: 1.1rem; margin-top: 1.6rem; }
   label{ font-size: 0.8rem; letter-spacing: 0.06em; color: var(--sage); text-transform: uppercase; }
+  .label-emph{ color: var(--ink); font-size: 0.92rem; font-weight: 600; }
   input, textarea, select{
     width:100%;
     background: var(--bg);
@@ -639,7 +641,7 @@
 
   <section class="hero block block-dark" id="top">
     <p class="eyebrow">20 августа 2026</p>
-    <h1 class="display">Вячеслав<span class="amp">&amp;</span>Наталья</h1>
+    <h1 class="display">Вячеслав<span class="amp"><img src="assets/&.png" alt="&amp;"></span>Наталья</h1>
     <p class="hero-venue">Новосибирск</p>
     <p class="hero-note">Дорогие родные и близкие!<br>Мы будем рады разделить с вами один из самых важных моментов нашей жизни — день нашей свадьбы.</p>
   </section>
@@ -730,12 +732,12 @@
     <div class="card">
       <form id="rsvpForm">
         <div>
-          <label for="guestName">Ваше имя и фамилия</label>
+          <label for="guestName" class="label-emph">Ваше имя и фамилия</label>
           <input type="text" id="guestName" name="guestName" required autocomplete="name">
         </div>
 
         <div>
-          <label>Планируете присутствовать?</label>
+          <label class="label-emph">Планируете присутствовать?</label>
           <div class="radio-row">
             <label><input type="radio" name="attending" value="Да" required> Да, буду</label>
             <label><input type="radio" name="attending" value="Нет" required> Не смогу</label>
