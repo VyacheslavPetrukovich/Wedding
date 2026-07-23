@@ -725,17 +725,17 @@
   </section>
 
   <section id="rsvp" class="block block-dark">
-    <p class="eyebrow">Ответьте, пожалуйста,<br>до 20 июля 2026</p>
+    <p class="eyebrow">Ответьте, пожалуйста,<br>до 30 июля 2026</p>
     <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;"><span class="rsvp-word-left">Будете</span> <span class="rsvp-letter-drop">с</span> <span class="rsvp-word-right">нами?</span></h2>
     <div class="card">
       <form id="rsvpForm">
         <div>
-          <label for="guestName">Ваше имя</label>
+          <label for="guestName">Ваше имя и фамилия</label>
           <input type="text" id="guestName" name="guestName" required autocomplete="name">
         </div>
 
         <div>
-          <label>Порадуете нас своим присутствием?</label>
+          <label>Планируете присутствовать?</label>
           <div class="radio-row">
             <label><input type="radio" name="attending" value="Да" required> Да, буду</label>
             <label><input type="radio" name="attending" value="Нет" required> Не смогу</label>
@@ -946,7 +946,7 @@
   document.querySelectorAll('input[name="attending"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       if (e.target.value === 'Да') {
-        guestCommentLabel.textContent = 'Комментарий (пожелания по меню, музыка на дискотеку, предпочтения по напиткам)';
+        guestCommentLabel.textContent = 'Комментарий (пожелания по меню, музыка на дискотеку, предпочтения по напиткам и т.д.)';
         guestComment.placeholder = '';
       } else {
         guestCommentLabel.textContent = 'Пожелания молодожёнам';
