@@ -408,6 +408,8 @@
     width: 58%;
     height: 58%;
     object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.2s linear;
   }
   .swatch-ring{
     position: absolute;
@@ -922,6 +924,8 @@
       swatches.forEach(sw => {
         const ring = sw.querySelector('.swatch-ring-fill');
         if (ring) ring.style.strokeDashoffset = circumference * (1 - progress);
+        const icon = sw.querySelector('.swatch-icon');
+        if (icon) icon.style.opacity = progress;
       });
       ticking = false;
     }
