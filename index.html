@@ -424,6 +424,45 @@
   }
 
   /* Location */
+  /* Карусель фотографий дома */
+  .house-gallery-wrap{
+    margin: 1.4rem -2rem 0;
+  }
+  .house-gallery{
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem calc(50% - 110px) 1.1rem;
+    cursor: grab;
+    scrollbar-width: none;
+  }
+  .house-gallery::-webkit-scrollbar{ display: none; }
+  .house-gallery.dragging{ cursor: grabbing; scroll-snap-type: none; }
+  .house-photo{
+    flex: 0 0 auto;
+    width: 220px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 1.25rem;
+    scroll-snap-align: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    transform: scale(0.85);
+    opacity: 0.5;
+    filter: saturate(0.5);
+    transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  .house-photo.is-active{
+    transform: scale(1);
+    opacity: 1;
+    filter: saturate(1);
+    box-shadow: 0 16px 34px rgba(0,0,0,0.35);
+  }
+
   .map-embed{
     margin-top: 1.4rem;
     border-radius: 1.25rem;
@@ -649,6 +688,15 @@
   <section id="location" class="block block-light">
     <p class="eyebrow loc-left">Место проведения</p>
     <h2 class="display loc-left" style="font-size:1.8rem; margin-top:0.4rem;">Коттедж «Golden»</h2>
+    <div class="house-gallery-wrap">
+      <div class="house-gallery" id="houseGallery">
+        <img class="house-photo" src="assets/house_2.jpg" alt="">
+        <img class="house-photo" src="assets/house_1.jpg" alt="" data-active="true">
+        <img class="house-photo" src="assets/house_3.jpg" alt="">
+        <img class="house-photo" src="assets/house_4.jpg" alt="">
+        <img class="house-photo" src="assets/house_5.jpg" alt="">
+      </div>
+    </div>
     <p class="hero-note loc-right" style="margin-left:0;">г. Новосибирск, ул. Сестрорецкая, д. 16</p>
     <div class="map-embed">
       <iframe src="https://yandex.ru/map-widget/v1/?text=Новосибирск%2C%20ул.%20Сестрорецкая%2C%20д.%2016&z=16&l=map" width="100%" height="240" frameborder="0" loading="lazy" title="Карта проезда"></iframe>
@@ -761,6 +809,61 @@
     }, { threshold: 0.65 });
     calendarObserver.observe(calendarSection);
   }
+
+  // ---------- Карусель фотографий дома ----------
+  (function(){
+    const gallery = document.getElementById('houseGallery');
+    if (!gallery) return;
+    const photos = [...gallery.querySelectorAll('.house-photo')];
+
+    function updateActive(){
+      const containerRect = gallery.getBoundingClientRect();
+      const centerX = containerRect.left + containerRect.width / 2;
+      let closest = null;
+      let closestDist = Infinity;
+      photos.forEach(photo => {
+        const r = photo.getBoundingClientRect();
+        const photoCenter = r.left + r.width / 2;
+        const dist = Math.abs(photoCenter - centerX);
+        if (dist < closestDist) { closestDist = dist; closest = photo; }
+      });
+      photos.forEach(p => p.classList.toggle('is-active', p === closest));
+    }
+
+    let ticking = false;
+    gallery.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { updateActive(); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    const initial = gallery.querySelector('[data-active="true"]');
+    if (initial) initial.scrollIntoView({ inline: 'center', block: 'nearest' });
+    updateActive();
+
+    // Перетаскивание мышью на десктопе (свайп уже работает нативно на тачскрине)
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
+    gallery.addEventListener('mousedown', (e) => {
+      isDown = true;
+      gallery.classList.add('dragging');
+      startX = e.pageX;
+      scrollStart = gallery.scrollLeft;
+    });
+    window.addEventListener('mouseup', () => {
+      if (!isDown) return;
+      isDown = false;
+      gallery.classList.remove('dragging');
+      updateActive();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      gallery.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+  })();
 
   // ---------- Резкое появление текста в блоке локации при скролле ----------
   if ('IntersectionObserver' in window) {
