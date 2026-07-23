@@ -394,9 +394,20 @@
     flex-wrap: wrap;
   }
   .swatch{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 46px; height:46px; border-radius: 50%;
     border: 1px solid var(--line);
     background: var(--c);
+  }
+  .swatch-icon{
+    width: 24px;
+    height: 24px;
+    color: var(--bg-card);
+    opacity: 0;
+    transition: opacity 0.15s linear;
   }
 
   /* Кружки дресс-кода заполняются по кругу строго в такт со скроллом (см. JS) */
@@ -614,11 +625,27 @@
     <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Одевайтесь с комфортом</h2>
     <p class="hero-note" style="margin-left:0;">Мы будем рады, если вы поддержите праздничную атмосферу и выберете нарядный и, главное, комфортный для вас образ! Также на нашем празднике будет бассейн, поэтому все желающие могут взять с собой купальник или плавки для комфортного отдыха.</p>
     <div class="palette" aria-hidden="true">
-      <span class="swatch" style="--c:#C9B183;"></span>
-      <span class="swatch" style="--c:#C79C96;"></span>
-      <span class="swatch" style="--c:#8A9A7C;"></span>
-      <span class="swatch" style="--c:#7C93A0;"></span>
-      <span class="swatch" style="--c:#9B7C8A;"></span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 L12 6 L16 3 L20 6 L18 9 L16 8 L16 21 L8 21 L8 8 L6 9 L4 6 Z"/><line x1="12" y1="6" x2="12" y2="21"/></svg>
+      </span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 L9 7 L5 21 L19 21 L15 7 L15 3"/><path d="M9 3 Q12 5 15 3"/></svg>
+      </span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 C9 3 15 3 15 4 L18 8 L16 10 L15 8 L15 20 L9 20 L9 8 L8 10 L6 8 Z"/><circle cx="12" cy="6" r="1"/></svg>
+      </span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4 L4 7 L6 10 L8 8.5 L8 20 L16 20 L16 8.5 L18 10 L20 7 L16 4 L14 5.5 L10 5.5 Z"/></svg>
+      </span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 C4 15 7 14 9 14 C11 14 12 12 14 12 L19 12 C20 12 21 13 20 15 L18 18 Z"/><path d="M4 18 L20 18"/><path d="M18 18 L19 21 L15 21"/></svg>
+      </span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 C3 15 5 14 7 14 L14 14 C16 14 18 15 20 16 C21 16.5 21 17.5 20 18 L4 18 C3 18 3 17.5 3 17 Z"/><path d="M7 14 L9 11 L13 11 L14 14"/><line x1="9" y1="12.5" x2="11" y2="12.5"/></svg>
+      </span>
+      <span class="swatch" style="--c:#F6EDE1;">
+        <svg class="swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="12" x2="12" y2="7"/><line x1="12" y1="12" x2="15.5" y2="14"/></svg>
+      </span>
     </div>
   </section>
 
@@ -769,7 +796,11 @@
       const end = vh * 0.5;    // кружки дошли до середины экрана — заливка 100%
       let progress = (start - rect.top) / (start - end);
       progress = Math.min(1, Math.max(0, progress));
-      swatches.forEach(sw => sw.style.setProperty('--fill', (progress * 100) + '%'));
+      swatches.forEach(sw => {
+        sw.style.setProperty('--fill', (progress * 100) + '%');
+        const icon = sw.querySelector('.swatch-icon');
+        if (icon) icon.style.opacity = progress;
+      });
       ticking = false;
     }
     function onScroll(){
