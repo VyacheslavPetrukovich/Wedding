@@ -917,7 +917,7 @@
       const rect = palette.getBoundingClientRect();
       const vh = window.innerHeight;
       const start = vh;        // сами кружки у низа экрана — заливка 0%
-      const end = vh * 0.5;    // кружки дошли до середины экрана — заливка 100%
+      const end = vh * 0.7;    // заливка 100% раньше - кружкам не нужно доходить до середины экрана
       let progress = (start - rect.top) / (start - end);
       progress = Math.min(1, Math.max(0, progress));
       const circumference = 169.6;
