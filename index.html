@@ -245,9 +245,10 @@
   .hero .display{
     font-size: clamp(2.6rem, 8vw, 4.4rem);
     font-style: italic;
+    line-height: 1.15;
     margin: 0.6rem 0 1rem;
   }
-  .hero .amp{ color: var(--gold); }
+  .hero .amp{ color: var(--gold); margin: 0 0.15em; }
   .hero-date{
     font-size: 1.05rem;
     letter-spacing: 0.1em;
@@ -586,7 +587,7 @@
 
   @media (max-width: 480px){
     .timeline li{ grid-template-columns: 60px 26px 1fr; }
-    .hero .amp{ display: block; margin: 0.25rem 0; }
+    .hero .amp{ display: block; margin: 0.05rem 0; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -621,7 +622,7 @@
 
   <section class="hero block block-dark" id="top">
     <p class="eyebrow">20 августа 2026</p>
-    <h1 class="display">Вячеслав <span class="amp">&amp;</span> Наталья</h1>
+    <h1 class="display">Вячеслав<span class="amp">&amp;</span>Наталья</h1>
     <p class="hero-venue">Новосибирск</p>
     <p class="hero-note">Дорогие родные и близкие!<br>Мы будем рады разделить с вами один из самых важных моментов нашей жизни — день нашей свадьбы.</p>
   </section>
