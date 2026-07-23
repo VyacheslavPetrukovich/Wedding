@@ -390,21 +390,23 @@
   /* Dress code swatches */
   .palette{
     display:flex;
-    gap: 0.8rem;
+    gap: clamp(0.3rem, 1.5vw, 0.8rem);
     margin-top: 1.6rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: center;
   }
   .swatch{
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px; height:60px; border-radius: 50%;
-    background: #F6EDE1;
+    flex: 0 0 auto;
+    width: clamp(38px, 12vw, 60px); height: clamp(38px, 12vw, 60px); border-radius: 50%;
+    background: #7A2635;
   }
   .swatch-icon{
-    width: 34px;
-    height: 34px;
+    width: 58%;
+    height: 58%;
     object-fit: contain;
   }
   .swatch-ring{
@@ -416,12 +418,12 @@
   }
   .swatch-ring-bg{
     fill: none;
-    stroke: rgba(58,15,22,0.25);
+    stroke: rgba(246,237,225,0.3);
     stroke-width: 3.5;
   }
   .swatch-ring-fill{
     fill: none;
-    stroke: var(--bg-card);
+    stroke: var(--ink);
     stroke-width: 3.5;
     stroke-linecap: round;
     stroke-dasharray: 169.6;
