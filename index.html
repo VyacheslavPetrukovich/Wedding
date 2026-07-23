@@ -839,7 +839,11 @@
     }, { passive: true });
 
     const initial = gallery.querySelector('[data-active="true"]');
-    if (initial) initial.scrollIntoView({ inline: 'center', block: 'nearest' });
+    if (initial) {
+      // Центрируем внутри самой ленты, а не всей страницы (scrollIntoView мог
+      // прокрутить весь документ вниз, если карусель ещё не видна на экране)
+      gallery.scrollLeft = initial.offsetLeft - gallery.clientWidth / 2 + initial.offsetWidth / 2;
+    }
     updateActive();
 
     // Перетаскивание мышью на десктопе (свайп уже работает нативно на тачскрине)
