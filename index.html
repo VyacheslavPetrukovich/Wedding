@@ -356,6 +356,23 @@
     position: relative;
   }
   .timeline .event{ font-size: 1.15rem; padding-top:0.1rem; }
+  .timeline .event small{
+    display: block;
+    font-size: 0.78rem;
+    font-family: 'Jost', sans-serif;
+    opacity: 0.7;
+    margin-top: 0.3rem;
+    line-height: 1.4;
+  }
+
+  .timeline-note{
+    margin: 1.6rem 0 0;
+    font-size: 0.8rem;
+    font-style: italic;
+    text-align: center;
+    color: var(--gold-soft);
+    opacity: 0.8;
+  }
 
   .timeline li time,
   .timeline li .event,
@@ -580,16 +597,16 @@
   </section>
 
   <section id="timeline" class="block block-light">
-    <p class="eyebrow">Как пройдёт день</p>
+    <p class="eyebrow">Тайминг дня</p>
     <h2 class="display" style="font-size:1.8rem; margin-top:0.4rem;">Программа</h2>
     <ul class="timeline">
       <li><time>17:00</time><span class="dot"></span><span class="event">Сбор гостей</span></li>
-      <li><time>17:30</time><span class="dot"></span><span class="event">Церемония</span></li>
-      <li><time>18:30</time><span class="dot"></span><span class="event">Фотосессия и фуршет</span></li>
-      <li><time>19:30</time><span class="dot"></span><span class="event">Банкет</span></li>
-      <li><time>22:00</time><span class="dot"></span><span class="event">Дискотека</span></li>
-      <li><time>23:00</time><span class="dot"></span><span class="event">Продолжение вечера</span></li>
+      <li><time>17:30</time><span class="dot"></span><span class="event">Начало церемонии</span></li>
+      <li><time>18:00</time><span class="dot"></span><span class="event">Банкет<br><small>Вкусные блюда и закуски, интересная программа от нашего ведущего</small></span></li>
+      <li><time>22:00</time><span class="dot"></span><span class="event">Песни и танцы</span></li>
+      <li><time>23:00</time><span class="dot"></span><span class="event">Завершение мероприятия</span></li>
     </ul>
+    <p class="timeline-note">но это не точно…</p>
   </section>
 
   <section id="dresscode" class="block block-dark">
