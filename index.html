@@ -677,7 +677,7 @@
           timelineObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.35 });
+    }, { threshold: 0.6 });
     timelineItems.forEach(li => timelineObserver.observe(li));
   }
 
@@ -717,7 +717,7 @@
           calendarObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.65 });
     calendarObserver.observe(calendarSection);
   }
 
